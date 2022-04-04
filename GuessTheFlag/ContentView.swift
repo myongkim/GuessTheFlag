@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
@@ -32,8 +34,7 @@ struct ContentView: View {
                 Spacer()
                 
                 Text("Guess the Flag")
-                    .foregroundColor(.white)
-                    .font(.largeTitle.weight(.bold))
+                    .title()
                 
                 VStack{
                     VStack(spacing: 15) {
@@ -49,10 +50,8 @@ struct ContentView: View {
                             flagTapped(number)
                             
                         } label: {
-                            Image(countries[number])
-                                .renderingMode(.original)
-                                .clipShape(Capsule())
-                                .shadow(radius: 5)
+                           FlagImage(name: countries[number])
+                            
                         }
                     }
                 }
@@ -115,10 +114,7 @@ struct ContentView: View {
         } else {
             showingScore = true
         }
-     
-        
- 
-        
+
     }
         
     
