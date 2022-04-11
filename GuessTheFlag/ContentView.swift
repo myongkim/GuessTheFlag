@@ -7,14 +7,20 @@
 
 import SwiftUI
 
-
-
+// objective
+//When you tap a flag, make it spin around 360 degrees on the Y axis.
+//Make the other two buttons fade out to 25% opacity.
+//Add a third effect of your choosing to the two flags the user didn’t choose – maybe make them scale down? Or flip in a different direction? Experiment!
+///
 struct ContentView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
     @State private var score = 0
     @State private var gameCount = 1
     @State private var showingResults = false
+    
+    @State private var selectedFlag = -1
+    
     
     
     @State private var countries = allCountries.shuffled()
@@ -47,13 +53,28 @@ struct ContentView: View {
                     ForEach(0..<3) { number in
                         Button {
                             // flag was tapped
+                         
                             flagTapped(number)
+                            
+                            
                             
                         } label: {
                            FlagImage(name: countries[number])
+                                
                             
                         }
+                        .rotation3DEffect(.degrees(selectedFlag == number ? 360 : 0), axis: (x: 0, y: 1, z: 0))
+                        .opacity(selectedFlag == -1 || selectedFlag == number ? 1.0 : 0.25)
+//                        .scaleEffect(selectedFlag == -1 || selectedFlag == number ? 1.0 : 0.75)
+//                        .saturation(selectedFlag == -1 || selectedFlag == number ? 1.0 : 0)
+                        .blur(radius: selectedFlag == -1 || selectedFlag == number ? 1 : 5)
+
+                        .animation(.default, value: selectedFlag)
+                        
+                        
                     }
+                    
+                   
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
@@ -86,7 +107,7 @@ struct ContentView: View {
         
     }
     func flagTapped(_ number: Int) {
-        
+        selectedFlag = number
         
         
         
@@ -124,6 +145,7 @@ struct ContentView: View {
         countries.shuffled()
         correctAnswer = Int.random(in: 0...2)
         gameCount += 1
+        selectedFlag = -1
     }
     
     func newGame() {
